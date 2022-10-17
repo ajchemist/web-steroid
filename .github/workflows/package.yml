@@ -2,6 +2,7 @@ name: Package CI
 
 
 on:
+  workflow_dispatch:
   push:
     paths:
       - ".github/workflows/package.yml"
