@@ -4,7 +4,7 @@
   <packaging>jar</packaging>
   <groupId>io.github.ajchemist</groupId>
   <artifactId>web-steroid</artifactId>
-  <version>2022.298.34370</version>
+  <version>2022.298.50094</version>
   <name>web-steroid</name>
   <dependencies>
     <dependency>
@@ -30,7 +30,7 @@
     <dependency>
       <groupId>io.github.ajchemist</groupId>
       <artifactId>user.ring</artifactId>
-      <version>2022.290.21542</version>
+      <version>2022.298.6339</version>
     </dependency>
   </dependencies>
   <build>
