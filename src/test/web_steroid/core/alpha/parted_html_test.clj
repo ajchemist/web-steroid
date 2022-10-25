@@ -1,5 +1,6 @@
 (ns web-steroid.core.alpha.parted-html-test
   (:require
+   [clojure.string :as str]
    [clojure.test :as test :refer [deftest is are]]
    [clojure.java.io :as jio]
    [web-steroid.core.alpha.parted-html :as parted-html]
@@ -12,6 +13,11 @@
 
 
 (deftest parse
+  (is (= (parted-html/parse-html-attrs-string
+           (parted-html/pre-part-lines
+             (str/split text-01 #"\n")))
+         "amp"))
+
   (is (= (parted-html/parse-parted-html "" [:a :b :c])
          {:a "" :b "" :c ""}))
 
@@ -40,7 +46,8 @@
             :html.body/contents-string
             :html.body.post/contents-string])
 
-         {:html.head.pre/contents-string  "",
+         {:html/attrs-string "amp"
+          :html.head.pre/contents-string  "",
           :html.head/contents-string      "<meta name=\"description\" content=\"This is example parted html\">",
           :html.head.post/contents-string "",
           :html.body.pre/contents-string  "",

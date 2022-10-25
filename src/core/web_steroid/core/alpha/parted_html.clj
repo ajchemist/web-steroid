@@ -4,6 +4,26 @@
    ))
 
 
+(def separator-line-re #"^\s*<!-- :[^\s]+ -->\s*$")
+
+
+(defn pre-part-lines
+  [lines]
+  (take-while
+    (fn [line]
+      (not (re-matches separator-line-re line)))
+    lines))
+
+
+(defn parse-html-attrs-string
+  [lines]
+  (some
+    (fn [line]
+      (when-some [[_ attrs-string] (re-matches #"^\s*<html\s?(.*)>\s*$" line)]
+        attrs-string))
+    lines))
+
+
 (defn lines-start-at
   [lines key]
   (->> lines
@@ -17,14 +37,17 @@
   [lines]
   (->> lines
     (take-while
-      (fn [line] (not (re-matches #"^\s*<!-- :[^\s]+ -->\s*$" line))))
+      (fn [line] (not (re-matches separator-line-re line))))
     (str/join "\n")))
 
 
 (defn parse-parted-html
   [text keys]
-  (let [tcoll (transient {})
-        lines (str/split text #"\n")]
+  (let [tcoll    (transient {})
+        lines    (str/split text #"\n")
+        pre-part (pre-part-lines lines)]
+    (when-some [attrs-string (parse-html-attrs-string pre-part)]
+      (assoc! tcoll :html/attrs-string attrs-string))
     (reduce
       (fn [remains key]
         (let [remains' (lines-start-at remains key)]

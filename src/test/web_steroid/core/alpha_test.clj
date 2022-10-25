@@ -175,7 +175,7 @@
   (is (= (handler--path-parted-html {:uri "/example" :request-method :get})
          {:status  200
           :headers {"Content-Type" "text/html"}
-          :body    "<!doctype html><html><head><meta name=\"description\" content=\"This is example parted html\"></head><body></body></html>"})
+          :body    "<!doctype html><html amp><head><meta name=\"description\" content=\"This is example parted html\"></head><body></body></html>"})
       "not slash ended path-parted-html")
   (is (= (handler--path-parted-html {:uri "/empty/" :request-method :get})
          {:status  200,
