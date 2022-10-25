@@ -9,7 +9,7 @@
   (->> lines
     (drop-while
       (fn [line]
-        (not (re-matches (re-pattern (str "^<!-- " key " -->\\s*$")) line))))
+        (not (re-matches (re-pattern (str "^\\s*<!-- " key " -->\\s*$")) line))))
     (rest)))
 
 
@@ -17,7 +17,7 @@
   [lines]
   (->> lines
     (take-while
-      (fn [line] (not (re-matches #"^<!-- :[^\s]+ -->\s*$" line))))
+      (fn [line] (not (re-matches #"^\s*<!-- :[^\s]+ -->\s*$" line))))
     (str/join "\n")))
 
 
