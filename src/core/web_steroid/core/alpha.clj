@@ -236,11 +236,18 @@
 
 (defn wrap-update-param
   "`update-fn` [value request]"
-  [handler key update-fn]
-  (user.ring/wrap-transform-request
-    handler
-    (fn [request]
-      (update request key update-fn request))))
+  ([handler key update-fn]
+   (user.ring/wrap-transform-request
+     handler
+     (fn [request]
+       (update key update-fn request))))
+  ([handler key update-fn predicate]
+   (user.ring/wrap-transform-request
+     handler
+     (fn [request]
+       (cond-> request
+         (predicate request)
+         (update key update-fn request))))))
 
 
 (defn wrap-asset
@@ -273,17 +280,16 @@
   - conditional render with `*render?`
   "
   [handler key render!]
-  (user.ring/wrap-transform-request
+  (wrap-update-param
     handler
+    key
+    (fn [compiled request]
+      (let [sb (StringBuilder.)]
+        (render! request sb)
+        (str compiled sb)))
     (fn [request]
-      (cond-> request
-        (and (:html-request? request)
-             (*render?* request))
-        (update key
-          (fn [compiled]
-            (let [sb (StringBuilder.)]
-              (render! request sb)
-              (str compiled sb))))))))
+      (and (:html-request? request)
+           (*render?* request)))))
 
 
 (defn wrap-html-render-asset
