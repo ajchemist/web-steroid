@@ -32,6 +32,10 @@
  :lint-as
  {
   clojure.core.cache/defcache clojure.core/defrecord
+
+  rum.core/defc  clj-kondo.lint-as/def-catch-all
+  rum.core/defcc clj-kondo.lint-as/def-catch-all
+  rum.core/defcs clj-kondo.lint-as/def-catch-all
   }
 
 

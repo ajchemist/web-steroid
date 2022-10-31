@@ -72,12 +72,18 @@
 ;; * Ring response
 
 
-(defn html-response
+(defn empty-html-response
   [request]
   (let [charset (:html/charset request)]
     {:status  200
-     :headers { "Content-Type" (str "text/html" (when charset (str "; charset=" charset))) }
-     :body    (render-html request)}))
+     :headers { "Content-Type" (str "text/html" (when charset (str "; charset=" charset))) }}))
+
+
+(defn html-response
+  [request]
+  (-> request
+    (empty-html-response)
+    (assoc :body (render-html request))))
 
 
 ;; * path config edn
@@ -240,7 +246,7 @@
    (user.ring/wrap-transform-request
      handler
      (fn [request]
-       (update key update-fn request))))
+       (update request key update-fn request))))
   ([handler key update-fn predicate]
    (user.ring/wrap-transform-request
      handler

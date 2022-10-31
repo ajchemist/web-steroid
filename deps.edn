@@ -16,6 +16,7 @@
   {:extra-deps
    {
     metosin/reitit {:mvn/version "0.5.18"}
+    rum/rum        {:mvn/version "0.12.10"}
     }}
 
 
