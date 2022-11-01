@@ -24,12 +24,11 @@
         {:html-request? true
          :get
          (fn [request]
-           (-> request
-             (assoc :rum/component
-               [:<>
-                [:header (web.rum/->RootComponent (header))]
-                [:main (web.rum/->RootComponent (home))]])
-             (web.rum/html-response)))}]])))
+           (web.rum/html-response
+             [:<>
+              [:header (web.rum/->RootComponent (header))]
+              [:main (web.rum/->RootComponent (home))]]
+             request))}]])))
 
 
 (deftest main

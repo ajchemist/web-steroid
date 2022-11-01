@@ -18,17 +18,15 @@
 
 
 (defn render-html
-  [request]
-  (let [params (cond-> request
-                 (some? (:rum/component request))
-                 (update :html.body/contents-string
-                   (fn [compiled]
-                     (str compiled (rum.sr/render-static-markup (:rum/component request))))))]
+  [src request]
+  (let [params (update request :html.body/contents-string
+                 (fn [compiled]
+                   (str compiled (rum.sr/render-static-markup src))))]
     (web/render-html params)))
 
 
 (defn html-response
-  [request]
+  [src request]
   (-> request
     (web/empty-html-response)
-    (assoc :body (render-html request))))
+    (assoc :body (render-html src request))))
